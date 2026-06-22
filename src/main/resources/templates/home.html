@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NsNews</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <input type="text" id="searchInput" placeholder="Search news..." />
+<button onclick="searchNews()">Search</button>
+<div class="navbar">
+    <a href="#" onclick="getNews('general')">Home</a>
+    <a href="#" onclick="getNews('technology')">Technology</a>
+    <a href="#" onclick="getNews('sports')">Sports</a>
+    <a href="#" onclick="getNews('business')">Business</a>
+</div>
+<div class="header">
+    <h1>FlashNews</h1>
+</div>
+<h2 id="page-title">Latest News</h2>
+
+    <div id="news-container">
+
+    </div>
+
+    <script src="/js/script.js"></script>
+
+</body>
+
+</html>
