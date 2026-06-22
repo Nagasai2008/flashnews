@@ -1,5 +1,3 @@
-const API_KEY = "fd0c5481b04f4f56d56ad0d6bc020013";
-
 function getNews(category) {
 
     let container = document.getElementById("news-container");
@@ -25,18 +23,17 @@ function getNews(category) {
 
     let query = queries[category] || "india news";
 
-    fetch(`https://gnews.io/api/v4/search?q=${query}&lang=en&country=in&max=10&apikey=${API_KEY}`)
-        .then(res => res.json())
-        .then(data => {
-            showNews(data.articles);
-        })
-        .catch(err => {
+    fetch(`/news?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => showNews(data.articles))
+        .catch(error => {
             container.innerHTML = "<h3>Error loading news</h3>";
-            console.log(err);
+            console.error(error);
         });
 }
 
 function showNews(articles) {
+
     let container = document.getElementById("news-container");
     container.innerHTML = "";
 
@@ -46,14 +43,21 @@ function showNews(articles) {
     }
 
     articles.forEach(news => {
+
         container.innerHTML += `
-            <div class="card">
-                <h3>${news.title}</h3>
-                <p>${news.description || "No description available"}</p>
-                ${news.image ? `<img src="${news.image}" width="200"/>` : ""}
-                <br><br>
-                <a href="${news.url}" target="_blank">Read More</a>
-            </div>
+        <div class="card">
+            <h3>${news.title}</h3>
+            <p>${news.description || "No description available"}</p>
+
+            ${news.image ? `<img src="${news.image}" width="200">` : ""}
+
+            <br><br>
+
+            <a href="${news.url}" target="_blank">
+                Read More
+            </a>
+
+        </div>
         `;
     });
 }
@@ -65,16 +69,15 @@ function searchNews() {
     if (!query) return;
 
     let container = document.getElementById("news-container");
+
     container.innerHTML = "<h3>Searching...</h3>";
 
-    fetch(`https://gnews.io/api/v4/search?q=${query}&lang=en&country=in&max=10&apikey=${API_KEY}`)
-        .then(res => res.json())
-        .then(data => {
-            showNews(data.articles);
-        })
-        .catch(err => {
+    fetch(`/news?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => showNews(data.articles))
+        .catch(error => {
             container.innerHTML = "<h3>Error searching news</h3>";
-            console.log(err);
+            console.error(error);
         });
 }
 
