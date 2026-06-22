@@ -6,10 +6,10 @@ function getNews(category) {
     container.innerHTML = "<h3>Loading news...</h3>";
 
     let queries = {
-        general: "india breaking news today",
-        technology: "latest technology news ai gadgets software",
-        sports: "cricket football sports india match",
-        business: "stock market economy business india companies"
+        general: "india",
+        technology: "technology",
+        sports: "sports",
+        business: "business"
     };
 
     let titles = {
@@ -21,11 +21,14 @@ function getNews(category) {
 
     title.innerText = titles[category] || "Top News";
 
-    let query = queries[category] || "india news";
+    let query = queries[category] || "india";
 
     fetch(`/news?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
-        .then(data => showNews(data.articles))
+        .then(data => {
+            console.log(data); // for debugging
+            showNews(data.articles);
+        })
         .catch(error => {
             container.innerHTML = "<h3>Error loading news</h3>";
             console.error(error);
@@ -46,7 +49,9 @@ function showNews(articles) {
 
         container.innerHTML += `
         <div class="card">
+
             <h3>${news.title}</h3>
+
             <p>${news.description || "No description available"}</p>
 
             ${news.image ? `<img src="${news.image}" width="200">` : ""}
@@ -64,7 +69,7 @@ function showNews(articles) {
 
 function searchNews() {
 
-    let query = document.getElementById("searchInput").value;
+    let query = document.getElementById("searchInput").value.trim();
 
     if (!query) return;
 
@@ -74,11 +79,15 @@ function searchNews() {
 
     fetch(`/news?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
-        .then(data => showNews(data.articles))
+        .then(data => {
+            console.log(data); // for debugging
+            showNews(data.articles);
+        })
         .catch(error => {
             container.innerHTML = "<h3>Error searching news</h3>";
             console.error(error);
         });
 }
 
+// Load general news when page opens
 getNews('general');
